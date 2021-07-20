@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .container {
+                padding: 20px;
+                background: #eee;
+                border-radius: 20px;
+                margin: 20px;
+                transition: 1s;
+            }
+
+            .container.done {
+                filter: brightness(30%);
+            }
+
+            button {
+                padding: 8px 16px;
+                border-radius: 5px;
+                background: rgb(0, 158, 13);
+                color: white;
+                border: none;
+                outline: none;
+                box-shadow: 0px 2px 5px rgb(32, 255, 106);
+                cursor: pointer;
+            }
+
+            .cart_cont {
+                display: flex;
+                flex-wrap: wrap;
+                border-radius: 20px;
+                background-color: rgb(219, 219, 219);
+                margin: 20px;
+                overflow: hidden;
+                color: white;
+                background-color: rgb(0, 116, 224);
+            }
+            img {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+                object-position: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-wrapper"></div>
+        <!-- Firebase -->
+        <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+
+        <script>
+            const firebaseConfig = {
+                apiKey: "AIzaSyAKhlOxWp7TTZRwuCA7JcwdrYaXrAxCCs8",
+                authDomain: "rawbloom-51270.firebaseapp.com",
+                databaseURL:
+                    "https://rawbloom-51270-default-rtdb.europe-west1.firebasedatabase.app",
+                projectId: "rawbloom-51270",
+                storageBucket: "rawbloom-51270.appspot.com",
+                messagingSenderId: "238709112229",
+                appId: "1:238709112229:web:72c5edf0f3a9b3ca09bc4c",
+                measurementId: "G-2CPZ7N11W9",
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+
+            function getAll() {
+                try {
+                    const data = firebase
+                        .firestore()
+                        .collection("orders")
+                        .get()
+                        .then((querySnapshot) => {
+                            querySnapshot.forEach((doc) => {
+                                const container = document.createElement("div");
+                                const fn = document.createElement("p");
+                                const phn = document.createElement("p");
+                                const adrs = document.createElement("p");
+                                const itemCost = document.createElement("p");
+                                const toggle = document.createElement("button");
+                                const cart_items = document.createElement("div");
+
+                                doc.data().payload.ClientCart.forEach((item) => {
+                                    const cart_cont = document.createElement("div");
+                                    const prdImg = document.createElement("img");
+                                    const prd_details = document.createElement("div");
+                                    cart_cont.className = "cart_cont";
+                                    prdImg.src = item.imgSrc;
+                                    prd_details.style.padding = "15px";
+                                    const pname = document.createElement("p");
+                                    const pcount = document.createElement("p");
+                                    const pprice = document.createElement("p");
+                                    const pcost = document.createElement("p");
+
+                                    pname.innerHTML = "Product name ---- " + item.name;
+                                    pcount.innerHTML =
+                                        "How many of this Client Bought ---- " + item.count;
+                                    pcost.innerHTML =
+                                        "Actual Cost of each of this Product ---- " + item.price;
+                                    pprice.innerHTML =
+                                        "Cost of this Prduct (cost * count) ----" + item.ItemPrice;
+                                    prd_details.append(pname);
+                                    prd_details.append(pcount);
+                                    prd_details.append(pcost);
+                                    prd_details.append(pprice);
+                                    cart_cont.append(prdImg);
+                                    cart_cont.append(prd_details);
+                                    cart_items.append(cart_cont);
+                                });
+
+                                container.className = "container";
+                                fn.innerHTML =
+                                    "Fullname ------ " + doc.data().payload.ClientData.name;
+                                phn.innerHTML =
+                                    "Phone no ------ " + doc.data().payload.ClientData.number;
+                                adrs.innerHTML =
+                                    "Adress -------- " + doc.data().payload.ClientData.address;
+                                itemCost.innerHTML = "Items Cost ----- N" + doc.data().totalPrice;
+
+                                toggle.innerHTML = "Clear this Person";
+                                toggle.addEventListener("click", () => {
+                                    container.classList.toggle("done");
+                                });
+                                container.append(fn);
+                                container.append(phn);
+                                container.append(adrs);
+                                container.append(itemCost);
+                                container.append(cart_items);
+                                container.append(toggle);
+                                console.log(doc.data());
+                                document.querySelector(".container-wrapper").appendChild(container);
+                            });
+                        });
+                    console.log(data);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+            getAll();
+        </script>
+    </body>
+</html>
+
+<!-- cart items -->
