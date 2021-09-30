@@ -79,6 +79,7 @@
                         .then((querySnapshot) => {
                             querySnapshot.forEach((doc) => {
                                 const container = document.createElement("div");
+                                const orderNo = document.createElement("p");
                                 const fn = document.createElement("p");
                                 const phn = document.createElement("p");
                                 const adrs = document.createElement("p");
@@ -115,6 +116,8 @@
                                 });
 
                                 container.className = "container";
+                                orderNo.innerHTML =
+                                    "Order Number ------ " + doc.data().payload.ClientData.id;
                                 fn.innerHTML =
                                     "Fullname ------ " + doc.data().payload.ClientData.name;
                                 phn.innerHTML =
@@ -127,6 +130,7 @@
                                 toggle.addEventListener("click", () => {
                                     container.classList.toggle("done");
                                 });
+                                container.append(orderNo);
                                 container.append(fn);
                                 container.append(phn);
                                 container.append(adrs);
