@@ -4,55 +4,209 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"
+        />
+
+        <title>Rawbloom Order Review</title>
         <style>
-            .container {
+            @import url("http://fonts.cdnfonts.com/css/gisha?styles=17255");
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                font-family: Gisha;
+                background: #ff2e63;
+                color: white;
+            }
+            .orders_header {
                 padding: 20px;
-                background: #eee;
-                border-radius: 20px;
+                font-size: 4vw;
+            }
+            span.hold {
+                white-space: nowrap;
+                border: none !important;
+                padding: 0 !important;
+            }
+            .container-wrapper {
+                display: grid;
+                gap: 50px;
+            }
+            .container {
+                background: #010a43;
+                border-radius: 0px;
+                padding: 20px;
                 margin: 20px;
                 transition: 1s;
+                box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.24);
             }
 
-            .container.done {
-                filter: brightness(30%);
+            .container .grid {
+                margin-bottom: 20px;
+                flex: auto;
+            }
+
+            .container .grid .row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .container .grid .row span {
+                padding: 20px;
+                border: 1px solid white;
+            }
+
+            .container .grid .row span:first-child {
+                border-width: 0px 1px 1px 0px;
+            }
+            .container .grid .row span:last-child {
+                border-width: 0px 0px 0px 1px;
+            }
+            .container .grid .row span:nth-child(even) {
+                border-top-width: 1px;
+            }
+            .container .grid .row:first-child span:nth-child(2) {
+                border-top-width: 0px;
+            }
+            .container .grid .row:last-child span:nth-child(1) {
+                border-bottom-width: 0px;
+            }
+
+            main {
+                transition: 0.5s ease-out;
+                overflow: hidden;
             }
 
             button {
-                padding: 8px 16px;
+                padding: 0.5em 1.2em;
                 border-radius: 5px;
-                background: rgb(0, 158, 13);
-                color: white;
+                background: #ff2e63;
+                color: #010a43;
                 border: none;
+                font-weight: 600;
+                font-size: 18px;
                 outline: none;
-                box-shadow: 0px 2px 5px rgb(32, 255, 106);
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.445);
                 cursor: pointer;
             }
 
             .cart_cont {
                 display: flex;
                 flex-wrap: wrap;
-                border-radius: 20px;
-                background-color: rgb(219, 219, 219);
-                margin: 20px;
+                margin: 20px 0;
                 overflow: hidden;
                 color: white;
-                background-color: rgb(0, 116, 224);
+                background-color: #ff9d9da6;
+                position: relative;
+            }
+            .cart_cont::before {
+                content: attr(data-item_name);
+                position: absolute;
+                color: white;
+                font-size: 100px;
+                opacity: 0.15;
+                top: 50%;
+                left: 40%;
+                transform: translateY(-50%);
+                text-overflow: clip;
+                overflow: hidden;
+                white-space: nowrap;
+                z-index: 0;
+            }
+            .cart_cont .grid {
+                padding: 20px;
             }
             img {
-                width: 200px;
-                height: 200px;
+                width: 300px;
+                height: auto;
                 object-fit: cover;
                 object-position: center;
+            }
+
+            /* mag */
+            /* overlay at start */
+            .mfp-fade.mfp-bg {
+                opacity: 0;
+
+                -webkit-transition: all 0.3s ease-out;
+                -moz-transition: all 0.3s ease-out;
+                transition: all 0.3s ease-out;
+            }
+            /* overlay animate in */
+            .mfp-fade.mfp-bg.mfp-ready {
+                opacity: 0.8;
+            }
+            /* overlay animate out */
+            .mfp-fade.mfp-bg.mfp-removing {
+                opacity: 0;
+            }
+
+            /* content at start */
+            .mfp-fade.mfp-wrap .mfp-content {
+                opacity: 0;
+                transform: scale(0.5);
+                -webkit-transition: all 0.3s ease-out;
+                -moz-transition: all 0.3s ease-out;
+                transition: all 0.3s ease-out;
+            }
+            /* content animate it */
+            .mfp-fade.mfp-wrap.mfp-ready .mfp-content {
+                opacity: 1;
+                transform: scale(1);
+            }
+            /* content animate out */
+            .mfp-fade.mfp-wrap.mfp-removing .mfp-content {
+                transform: scale(0.5);
+                opacity: 0;
+                transition: all 0.3s ease-out;
+            }
+            @media screen and (max-width: 500px) {
+                img {
+                    width: 100%;
+                }
+                .container .grid .row span {
+                    padding: 15px;
+                }
+                body > div.container-wrapper > div > main > div > div > div {
+                    padding: 0px !important;
+                }
+                .container {
+                    margin: 10px;
+                    padding: 10px;
+                }
+                .cart_cont .grid {
+                    padding: 0px;
+                }
+                button {
+                    font-size: 12px;
+                }
+            }
+
+            .delete_order {
+                background-color: #e30500;
+                color: white;
+                margin-top: 15px;
             }
         </style>
     </head>
     <body>
+        <div class="orders_header">
+            <h1 class="header">
+                All List of Orders Currently in the Database
+                <span class="hold">(<span class="count"></span> Orders Remaining)</span>
+            </h1>
+        </div>
         <div class="container-wrapper"></div>
         <!-- Firebase -->
         <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>
 
         <script>
             const firebaseConfig = {
@@ -70,22 +224,32 @@
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
 
-            function getAll() {
+            async function getAll() {
                 try {
-                    const data = firebase
+                    const data = await firebase
                         .firestore()
                         .collection("orders")
                         .get()
                         .then((querySnapshot) => {
                             querySnapshot.forEach((doc) => {
                                 const container = document.createElement("div");
-                                const orderNo = document.createElement("p");
+                                const main = document.createElement("main");
+                                const grid = document.createElement("div");
+                                const row0 = document.createElement("div");
+                                const row1 = document.createElement("div");
+                                const row2 = document.createElement("div");
+                                const row3 = document.createElement("div");
+                                const row4 = document.createElement("div");
+                                const row5 = document.createElement("div");
                                 const fn = document.createElement("p");
                                 const phn = document.createElement("p");
                                 const adrs = document.createElement("p");
                                 const itemCost = document.createElement("p");
                                 const toggle = document.createElement("button");
+                                const delete_btn = document.createElement("button");
                                 const cart_items = document.createElement("div");
+                                const rows = [row0, row1, row2, row3, row4, row5];
+                                const clientReceipt = doc.data().payload.ClientData.receiptUrl;
 
                                 doc.data().payload.ClientCart.forEach((item) => {
                                     const cart_cont = document.createElement("div");
@@ -99,48 +263,114 @@
                                     const pprice = document.createElement("p");
                                     const pcost = document.createElement("p");
 
-                                    pname.innerHTML = "Product name ---- " + item.name;
-                                    pcount.innerHTML =
-                                        "How many of this Client Bought ---- " + item.count;
-                                    pcost.innerHTML =
-                                        "Actual Cost of each of this Product ---- " + item.price;
-                                    pprice.innerHTML =
-                                        "Cost of this Prduct (cost * count) ----" + item.ItemPrice;
-                                    prd_details.append(pname);
-                                    prd_details.append(pcount);
-                                    prd_details.append(pcost);
-                                    prd_details.append(pprice);
+                                    const grid = document.createElement("div");
+                                    const row_inner1 = document.createElement("div");
+                                    const row_inner2 = document.createElement("div");
+                                    const row_inner3 = document.createElement("div");
+                                    const row_inner4 = document.createElement("div");
+                                    const row_inners = [
+                                        row_inner1,
+                                        row_inner2,
+                                        row_inner3,
+                                        row_inner4,
+                                    ];
+                                    grid.className = "grid";
+
+                                    row_inner1.innerHTML = `<span>Product name</span>
+                                 <span>${item.name}</span>`;
+                                    row_inner2.innerHTML = `<span>How many of this Client Bought</span>
+                                 <span>${item.count}</span>`;
+                                    row_inner3.innerHTML = `<span>Actual Cost of each of this Product</span>
+                                <span>${item.price}</span>`;
+                                    row_inner4.innerHTML = `<span>Cost of this Prduct <span class="hold">(cost * count)</span></span>
+                                          <span>N${item.ItemPrice}</span>`;
+
+                                    row_inners.forEach((row_inner) => {
+                                        row_inner.className = "row";
+                                        grid.append(row_inner);
+                                    });
+                                    prd_details.append(grid);
                                     cart_cont.append(prdImg);
                                     cart_cont.append(prd_details);
                                     cart_items.append(cart_cont);
                                 });
 
                                 container.className = "container";
-                               
-                                fn.innerHTML =
-                                    "Fullname ------ " + doc.data().payload.ClientData.name;
-                                phn.innerHTML =
-                                    "Phone no ------ " + doc.data().payload.ClientData.number;
-                                adrs.innerHTML =
-                                    "Adress -------- " + doc.data().payload.ClientData.address;
-                                itemCost.innerHTML = "Items Cost ----- N" + doc.data().totalPrice;
+                                grid.className = "grid";
+
+                                // row 1
+                                row0.innerHTML = `<span>Order ID</span>
+                            <span>${doc.data().OrderId}</span>`;
+                                row1.innerHTML = `<span>Fullname</span>
+                            <span>${doc.data().payload.ClientData.name}</span>`;
+                                row2.innerHTML = `<span>Phone no</span>
+                            <span>${doc.data().payload.ClientData.number}</span>`;
+                                row3.innerHTML = `<span>Address</span>
+                            <span>${doc.data().payload.ClientData.address}</span>`;
+                                row4.innerHTML = `<span>Total Items Cost</span>
+                            <span>N${doc.data().totalPrice}</span>`;
+                                row5.innerHTML = `<span>Client's Reciept</span>
+                                    <span
+                                        ><a
+                                            class="receipt-link"
+                                            href="${clientReceipt}"
+                                            ><button>View Reciept</button></a
+                                        ></span
+                                    >`;
 
                                 toggle.innerHTML = "Clear this Person";
-                                toggle.addEventListener("click", () => {
-                                    container.classList.toggle("done");
+                                delete_btn.innerHTML = "Delete this Order from Database";
+                                delete_btn.className = "delete_order";
+                                delete_btn.addEventListener("click", () => {
+                                    const ans = confirm(
+                                        "Aunt Bami are you sure you've completed this Order 🌚💀?"
+                                    );
+                                    if (ans)
+                                        firebase.firestore
+                                            .collection("orders")
+                                            .doc(doc.data().OrderId)
+                                            .delete()
+                                            .then(() => {
+                                                alert("You don delete the order oo 🌚");
+                                            })
+                                            .catch((err) => {
+                                                alert(
+                                                    "Some error Occured, please tell me what you see here -->  ",
+                                                    err.message
+                                                );
+                                            });
                                 });
-                                container.append(orderNo);
-                                container.append(fn);
-                                container.append(phn);
-                                container.append(adrs);
-                                container.append(itemCost);
-                                container.append(cart_items);
+                                toggle.addEventListener("click", function () {
+                                    if (container.classList.contains("done")) {
+                                        this.innerHTML = "Clear this Person";
+                                        gsap.to(main, { height: "auto" });
+                                        container.classList.remove("done");
+                                    } else {
+                                        this.innerText = "Unclear This Person";
+                                        gsap.to(main, { height: "0px" });
+                                        container.classList.add("done");
+                                    }
+                                });
+                                rows.forEach((row) => {
+                                    row.className = "row";
+                                    grid.append(row);
+                                });
+                                main.append(grid);
+                                main.append(cart_items);
+                                container.append(main);
                                 container.append(toggle);
-                                console.log(doc.data());
+                                container.append(delete_btn);
                                 document.querySelector(".container-wrapper").appendChild(container);
                             });
+                            document.querySelector(
+                                "body > div.orders_header > h1 > span > span"
+                            ).innerHTML = querySnapshot.docs.length;
                         });
-                    console.log(data);
+                    $(".receipt-link").magnificPopup({
+                        type: "image",
+                        mainClass: "mfp-fade",
+                        preloader: true,
+                    });
                 } catch (err) {
                     console.log(err);
                 }
